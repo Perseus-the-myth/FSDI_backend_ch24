@@ -8,14 +8,7 @@ catalog = [
         "image": "Aviator glasses.jpeg",
         "category": "Apperal",
     },
-    {
-        "_id": "y123iuyoh",
-        "title": "jackets",
-        "price": 100.00,
-        "stock": 20,
-        "image": "jacket.jpeg",
-        "category": "Apperal",
-    },
+    
 
     {
         "_id": "08fjjefe",
