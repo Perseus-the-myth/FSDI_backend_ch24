@@ -127,10 +127,10 @@ def get_product(id):
 @app.route("/api/catalog/<category>")
 def get_by_category(category):
     result = []
-    category = category.lower()
-    for product in catalog:
-        if product["category"].lower == category:
-            result.append(product)
+    cursor = db.products.find({"category": category})
+    for prod in cursor:
+        prod["_id"] = str(prod["_id"])
+        result.append(prod)
 
     return json.dumps(result)
 
@@ -184,4 +184,65 @@ def get_highest_investment():
 
     return json.dumps(highest)
 #start the server
+
+
+
+##########################################
+
+#GET
+@app.route("/api/couponCodes")
+def get_coupon_codes():
+    cursor = db.couponCodes.find({})
+    result = []
+
+    for coupon in cursor:
+        coupon["_id"] = str(coupon["_id"])
+        result.append(coupon)
+
+    return json.dumps(result)
+
+#POST
+
+@app.route("/api/couponCodes", methods=["POST"])
+def save_coupon():
+    couponCode = request.get_json()
+
+    if not "code" in couponCode:
+        return abort(400, "Code is required")
+   
+    if not "discount" in couponCode:
+        return abort(400, "discount is required")
+
+    db.couponCodes.insert_one(couponCode)
+
+    couponCode["_id"] = str(couponCode["_id"])
+    return json.dumps(couponCode)
+
+    return json.dumps(result)
+
+
+    @app.route("/api/couponCodes/<code>")
+    def valid_coupon(code):
+        print(code)
+        
+        coupon = db.couponCodes.find_one({"code": code})
+        if not coupon:
+            return abort(404)
+
+        coupon["_id"] = str(coupon["_id"])
+
+        return json.dumps(coupon)
+
+
+
+        return "OK"
+
+
+    
+
+
+
+
+
+
 app.run(debug=True)
